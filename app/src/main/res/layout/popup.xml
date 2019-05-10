@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/pop_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_margin="30dp"
+        android:id="@+id/pop_linear"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_margin="20dp"
+            android:id="@+id/pop_save"
+            android:background="@android:color/darker_gray"
+            android:text="SAVE"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_margin="20dp"
+            android:id="@+id/pop_exit"
+            android:background="@android:color/darker_gray"
+            android:text="EXIT"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:layout_below="@+id/pop_linear"
+        android:id="@+id/pop_view"
+        android:text="MEMO"
+        android:textSize="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/pop_edit"
+        android:layout_below="@id/pop_view"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        />
+    <TextView
+        android:id="@+id/pop_textview"
+        android:layout_below="@+id/pop_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:id="@+id/pop_linear2"
+        android:layout_below="@id/pop_textview"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <Button
+            android:layout_margin="10dp"
+            android:id="@+id/pop_mitting"
+            android:background="@android:color/holo_red_dark"
+            android:text="미팅"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_margin="10dp"
+            android:id="@+id/pop_promiss"
+            android:background="@android:color/holo_orange_dark"
+            android:text="약속"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_margin="10dp"
+            android:id="@+id/pop_work"
+            android:background="@android:color/holo_blue_bright"
+            android:text="할일"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TimePicker
+        android:id="@+id/time_pick"
+        android:timePickerMode="spinner"
+        android:layout_below="@id/pop_linear2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    </TimePicker>
+
+
+
+</RelativeLayout>

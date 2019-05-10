@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+
+    android:gravity="center">
+
+
+
+    <TextView
+
+        android:id="@+id/tv_item_gridview"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="80dp"
+
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+         <TextView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@android:color/holo_red_dark"
+        />
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@android:color/holo_red_dark"
+            />
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@android:color/holo_red_dark"
+            />
+    </LinearLayout>
+
+
+
+</RelativeLayout>
