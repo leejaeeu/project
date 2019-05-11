@@ -10,6 +10,7 @@
 
 
     <TextView
+        android:textColor="@color/gray"
 
         android:id="@+id/tv_item_gridview"
 
@@ -22,26 +23,30 @@
 
         />
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
          <TextView
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@android:color/holo_red_dark"
+             android:id="@+id/meet_view"
+             android:visibility="gone"
+             android:layout_width="match_parent"
+             android:layout_height="10dp"
+             android:background="@android:color/holo_red_dark"
         />
         <TextView
+            android:id="@+id/promiss_view"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="@android:color/holo_red_dark"
+            android:background="@android:color/holo_orange_dark"
             />
         <TextView
+            android:id="@+id/work_view"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="@android:color/holo_red_dark"
+            android:background="@android:color/holo_blue_bright"
             />
     </LinearLayout>
 

@@ -1,9 +1,11 @@
 package com.example.calendarproject;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> dayList;
     private GridView gridView;
     private Calendar mCal;
+    int meetvalue;
+    int mitvalue;
+    int workvalue;
 //    private Button btn_mitting=(Button)findViewById(R.id.btn_mitting);
 //    private Button btn_promiss=(Button)findViewById(R.id.btn_promiss);
 //    private Button btn_ex11=(Button)findViewById(R.id.btn_ex11);
@@ -40,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         tvDate = (TextView)findViewById(R.id.tv_date);
 
         gridView = (GridView)findViewById(R.id.gridview);
+
 
 
         // 오늘에 날짜를 세팅 해준다.
@@ -105,17 +113,50 @@ public class MainActivity extends AppCompatActivity {
 
         gridAdapter = new GridAdapter(getApplicationContext(), dayList);
         gridView.setAdapter(gridAdapter);
-
-        AdapterView.OnItemClickListener mClickListener = new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String tv = (String) parent.getAdapter().getItem(position);
-                Intent intent = new Intent(MainActivity.this, Popup.class);
+                //    Toast.makeText(MainActivity.this, dayList.get(position),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this,Popup.class);
+                //    intent.putExtra("year", dayList.get(position));
+                intent.putExtra("year",dayList.get(position)+"일");
+                Toast.makeText(MainActivity.this, ""+dayList.get(position), Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
-        };
+        });
 
-        gridView.setOnItemClickListener(mClickListener);
+//        AdapterView.OnItemClickListener mClickListener = new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String tv = (String) parent.getAdapter().getItem(position);
+////                Toast.makeText(MainActivity.this, tv +"일을 선택했습니다.", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(MainActivity.this, Popup.class);
+//                intent.putExtra("date",position);
+//                Toast.makeText(MainActivity.this, "a" + date, Toast.LENGTH_SHORT).show();
+//                startActivityForResult(intent, 101);
+//            }
+//        };
+
+//        gridView.setOnItemClickListener(mClickListener);
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 101){
+            if(resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                meetvalue = bundle.getInt("a");
+                mitvalue = bundle.getInt("b");
+                workvalue = bundle.getInt("c");
+                Toast.makeText(this, "a: " + meetvalue + " " + "b: " + mitvalue + "c: " + workvalue, Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
 
     }
 
@@ -144,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 그리드뷰 어댑터
      */
+
+
 
     private class GridAdapter extends BaseAdapter {
 
@@ -178,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
         public String getItem(int position) {
 
             return list.get(position);
-
         }
 
         @Override
@@ -203,18 +245,27 @@ public class MainActivity extends AppCompatActivity {
 
                 holder.tvItemGridView = (TextView)convertView.findViewById(R.id.tv_item_gridview);
 
+
                 convertView.setTag(holder);
-            } else {
+
+            } else{
                 holder = (ViewHolder)convertView.getTag();
             }
+
             holder.tvItemGridView.setText("" + getItem(position));
+
+//
+
+
+
+            //Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
 
 
             //해당 날짜 텍스트 컬러,배경 변경
 
             mCal = Calendar.getInstance();
 
-            //오늘 day 가져옴
+            //오늘 Day 가져옴
 
             Integer today = mCal.get(Calendar.DAY_OF_MONTH);
 
@@ -222,10 +273,11 @@ public class MainActivity extends AppCompatActivity {
 
             if (sToday.equals(getItem(position))) {
                 holder.tvItemGridView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+
             }
 
 
-                return convertView;
+            return convertView;
 
         }
 
@@ -236,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tvItemGridView;
 
     }
+
 
 
 }

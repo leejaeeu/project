@@ -33,7 +33,6 @@
 
 
     <GridView
-
         android:layout_marginTop="10dp"
         android:id="@+id/gridview"
         android:layout_weight="1"
