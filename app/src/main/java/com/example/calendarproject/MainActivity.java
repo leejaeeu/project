@@ -22,275 +22,111 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private final String[] WEEK = {"일", "월", "화", "수", "목", "금", "토"};
+    private  ArrayList<Day> dayEventList;
     private TextView tvDate;
     private GridAdapter gridAdapter;
     private ArrayList<String> dayList;
     private GridView gridView;
     private Calendar mCal;
-    int meetvalue;
-    int mitvalue;
-    int workvalue;
-//    private Button btn_mitting=(Button)findViewById(R.id.btn_mitting);
-//    private Button btn_promiss=(Button)findViewById(R.id.btn_promiss);
-//    private Button btn_ex11=(Button)findViewById(R.id.btn_ex11);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvDate = (TextView)findViewById(R.id.tv_date);
-
-        gridView = (GridView)findViewById(R.id.gridview);
-
-
+        tvDate = (TextView) findViewById(R.id.tv_date);
+        gridView = (GridView) findViewById(R.id.gridview);
 
         // 오늘에 날짜를 세팅 해준다.
-
         long now = System.currentTimeMillis();
-
         final Date date = new Date(now);
 
         //연,월,일을 따로 저장
-
         final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
-
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
-
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
-
-
-
         //현재 날짜 텍스트뷰에 뿌려줌
-
-        tvDate.setText(curYearFormat.format(date) + "/" + curMonthFormat.format(date)+ "/" + curDayFormat.format(date));
-
-
+        tvDate.setText(curYearFormat.format(date) + "/" + curMonthFormat.format(date));
 
         //gridview 요일 표시
-
         dayList = new ArrayList<String>();
-
-        dayList.add("일");
-
-        dayList.add("월");
-
-        dayList.add("화");
-
-        dayList.add("수");
-
-        dayList.add("목");
-
-        dayList.add("금");
-
-        dayList.add("토");
-
-
-        mCal = Calendar.getInstance();
-
+        for(String week : WEEK){
+            dayList.add(week);
+        }
         //이번달 1일 무슨요일인지 판단 mCal.set(Year,Month,Day)
-
+        mCal = Calendar.getInstance();
         mCal.set(Integer.parseInt(curYearFormat.format(date)), Integer.parseInt(curMonthFormat.format(date)) - 1, 1);
-
-        int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
-
         //1일 - 요일 매칭 시키기 위해 공백 add
-
+        int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
         for (int i = 1; i < dayNum; i++) {
-
             dayList.add("");
-
         }
 
         setCalendarDate(mCal.get(Calendar.MONTH) + 1);
 
+        dayEventList = new ArrayList<>();
+        for(int i=1; i<=31; i++){
+            dayEventList.add(new Day(i, Integer.parseInt(curMonthFormat.format(date)) - 1, Integer.parseInt(curYearFormat.format(date))));
+        }
 
-        gridAdapter = new GridAdapter(getApplicationContext(), dayList);
+
+
+        gridAdapter = new GridAdapter(getApplicationContext(), dayList, dayEventList);
         gridView.setAdapter(gridAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //    Toast.makeText(MainActivity.this, dayList.get(position),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this,Popup.class);
-                //    intent.putExtra("year", dayList.get(position));
-                intent.putExtra("year",dayList.get(position)+"일");
-                Toast.makeText(MainActivity.this, ""+dayList.get(position), Toast.LENGTH_SHORT).show();
-                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, Popup.class);
+                intent.putExtra("position", position);
+                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+                startActivityForResult(intent, 1);
             }
         });
-
-//        AdapterView.OnItemClickListener mClickListener = new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String tv = (String) parent.getAdapter().getItem(position);
-////                Toast.makeText(MainActivity.this, tv +"일을 선택했습니다.", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(MainActivity.this, Popup.class);
-//                intent.putExtra("date",position);
-//                Toast.makeText(MainActivity.this, "a" + date, Toast.LENGTH_SHORT).show();
-//                startActivityForResult(intent, 101);
-//            }
-//        };
-
-//        gridView.setOnItemClickListener(mClickListener);
-
-
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 101){
-            if(resultCode == Activity.RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                meetvalue = bundle.getInt("a");
-                mitvalue = bundle.getInt("b");
-                workvalue = bundle.getInt("c");
-                Toast.makeText(this, "a: " + meetvalue + " " + "b: " + mitvalue + "c: " + workvalue, Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
-
-    }
 
     /**
      * 해당 월에 표시할 일 수 구함
      */
 
-    private void setCalendarDate(int month) {
 
+    private void setCalendarDate(int month) {
         mCal.set(Calendar.MONTH, month - 1);
 
-
-
-
         for (int i = 0; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-
             dayList.add("" + (i + 1));
-
         }
-
-
-
-
     }
 
-    /**
-     * 그리드뷰 어댑터
-     */
+   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                //데이터 받기
+                int position = data.getIntExtra("popo", 0);
+                int a = data.getIntExtra("a", 0);
+                int b = data.getIntExtra("b", 0);
+                int c = data.getIntExtra("c", 0);
 
+                Day dayEvent = dayEventList.get(Integer.parseInt(dayList.get(position)) - 1);
 
-
-    private class GridAdapter extends BaseAdapter {
-
-
-        private final List<String> list;
-
-        private final LayoutInflater inflater;
-
-
-        /**
-         생성자
-         */
-
-        public GridAdapter(Context context, List<String> list) {
-
-            this.list = list;
-
-            this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        }
-
-        @Override
-
-        public int getCount() {
-
-            return list.size();
-
-        }
-
-        @Override
-
-        public String getItem(int position) {
-
-            return list.get(position);
-        }
-
-        @Override
-
-        public long getItemId(int position) {
-
-            return position;
-
-        }
-
-        @Override
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            ViewHolder holder = null;
-
-            if (convertView == null) {
-
-                convertView = inflater.inflate(R.layout.item_calendar_gridview, parent, false);
-
-                holder = new ViewHolder();
-
-                holder.tvItemGridView = (TextView)convertView.findViewById(R.id.tv_item_gridview);
-
-
-                convertView.setTag(holder);
-
-            } else{
-                holder = (ViewHolder)convertView.getTag();
+                dayEvent.setMeet(a);
+                dayEvent.setPro(b);
+                dayEvent.setWork(c);
+                gridAdapter.notifyDataSetChanged();
             }
-
-            holder.tvItemGridView.setText("" + getItem(position));
-
-//
-
-
-
-            //Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
-
-
-            //해당 날짜 텍스트 컬러,배경 변경
-
-            mCal = Calendar.getInstance();
-
-            //오늘 Day 가져옴
-
-            Integer today = mCal.get(Calendar.DAY_OF_MONTH);
-
-            String sToday = String.valueOf(today);
-
-            if (sToday.equals(getItem(position))) {
-                holder.tvItemGridView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-
-            }
-
-
-            return convertView;
-
         }
 
     }
-
-    private class ViewHolder {
-
-        TextView tvItemGridView;
-
-    }
-
-
-
 }
+
+
+
 
 

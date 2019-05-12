@@ -20,7 +20,6 @@ import android.widget.Toast;
 public class Popup extends AppCompatActivity {
 
     @Override
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup);
@@ -44,6 +43,7 @@ public class Popup extends AppCompatActivity {
             int meetcount=1;
             int workcount=1;
             int a,b,c;
+            int position;
 
             @Override
 
@@ -51,46 +51,45 @@ public class Popup extends AppCompatActivity {
                 if (v == mit) {
                     mitcount++;
                     if(mitcount%2==1){
-                        a=0;
-                        Intent intent = getIntent();
-                        String date = intent.getStringExtra("year");
-                        Toast.makeText(Popup.this, "."+date, Toast.LENGTH_SHORT).show();
+                        a=100;
+                        Intent getintent=getIntent();
+                        position=getintent.getIntExtra("position",0);
+//                        Toast.makeText(Popup.this, "확인"+position,Toast.LENGTH_SHORT).show();
                     }else if(mitcount%2==0){
-                        a=1;
+                        a=200;
+                        Intent getintent=getIntent();
+                        position=getintent.getIntExtra("position",0);
 
-//                        Toast.makeText(Popup.this, "취소되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else if (v == meet) {
                     meetcount++;
                     if(meetcount%2==1){
-                        b=0;
-
-//                        Toast.makeText(Popup.this, "선택되었습니다.", Toast.LENGTH_SHORT).show();
+                        b=100;
+                        Intent getintent=getIntent();
+                        position=getintent.getIntExtra("position",0);
                     }else if(meetcount%2==0){
-                        b=1;
-
-//                        Toast.makeText(Popup.this, "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        b=200;
+                        Intent getintent=getIntent();
+                        position=getintent.getIntExtra("position",0);
                     }
                 } else if (v == work) {
                     workcount++;
                     if(workcount%2==1){
-                        c=0;
-
-//                        Toast.makeText(Popup.this, "선택되었습니다.", Toast.LENGTH_SHORT).show();
+                        c=100;
+                        Intent getintent=getIntent();
+                        position=getintent.getIntExtra("position",0);
                     }else if(workcount%2==0){
-                        c=1;
-
-//                        Toast.makeText(Popup.this, "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        c=200;
+                        Intent getintent=getIntent();
+                        position=getintent.getIntExtra("position",0);
                     }
                 }else if (v==save){
-                    Intent intent = new Intent();
-                    Bundle bundle =new Bundle();
-//                    bundle.putInt("posi",);
-                    bundle.putInt("a",a);
-                    bundle.putInt("b", b);
-                    bundle.putInt("c", c);
-                    intent.putExtras(bundle);
-                    setResult(Activity.RESULT_OK, intent);
+                    Intent intent=new Intent();
+                    intent.putExtra("popo",position);
+                    intent.putExtra("a",a);
+                    intent.putExtra("b",b);
+                    intent.putExtra("c",c);
+                    setResult(RESULT_OK, intent);
                     finish();
                 }else if (v==exit){
                     finish();
@@ -103,10 +102,6 @@ public class Popup extends AppCompatActivity {
         save.setOnClickListener(btn2);
         exit.setOnClickListener(btn2);
     }
-
-    //    save 와 exit 눌렀을시 동작
-
-
 }
 
 
